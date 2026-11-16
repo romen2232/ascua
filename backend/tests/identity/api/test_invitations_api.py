@@ -9,6 +9,7 @@ from django_otp.plugins.otp_totp.models import TOTPDevice
 from rest_framework.test import APIClient
 
 from identity.infrastructure.models import UserRecord
+from tests.conftest import signed_in
 
 PASSWORD = "correct horse battery"
 
@@ -26,9 +27,7 @@ def member(db):
 
 
 def as_user(user) -> APIClient:
-    client = APIClient()
-    client.force_authenticate(user)
-    return client
+    return signed_in(user)
 
 
 def invite(admin_user, email="Friend@Example.com") -> str:

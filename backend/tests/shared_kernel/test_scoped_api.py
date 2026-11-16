@@ -2,6 +2,7 @@ import pytest
 from rest_framework.test import APIClient
 
 from identity.infrastructure.models import UserRecord
+from tests.conftest import signed_in
 
 URL = "/api/test/notes/"
 
@@ -17,9 +18,7 @@ def bob(db):
 
 
 def client_for(user) -> APIClient:
-    client = APIClient()
-    client.force_authenticate(user)
-    return client
+    return signed_in(user)
 
 
 def test_list_returns_only_own_notes(alice, bob):
@@ -65,3 +64,16 @@ def test_actor_is_cleared_after_request(alice):
 
     client_for(alice).get(URL)
     assert current_actor() is None
+
+
+def test_domain_error_without_rollback_keeps_writes(alice):
+    from shared_kernel.domain.actor import Actor
+    from shared_kernel.infrastructure.actor_context import acting_as
+    from tests.fixtures.sample_notes.infrastructure.models import SampleNote
+
+    response = client_for(alice).post(URL, {"text": "keep-then-fail"}, format="json")
+    assert response.status_code == 400
+    assert response.json()["error"]["code"] == "kept_then_failed"
+    actor = Actor(alice.pk, False)
+    with acting_as(actor):
+        assert SampleNote.objects.for_actor(actor).filter(text="keep-then-fail").exists()

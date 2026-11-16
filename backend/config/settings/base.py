@@ -1,6 +1,7 @@
 """Settings shared by every environment."""
 
 import os
+from datetime import timedelta
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -16,6 +17,8 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "django_otp",
     "django_otp.plugins.otp_totp",
+    "axes",
+    "rest_framework_simplejwt.token_blacklist",
     "shared_kernel.infrastructure.apps.SharedKernelConfig",
     "identity.infrastructure.apps.IdentityConfig",
 ]
@@ -23,7 +26,29 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.middleware.common.CommonMiddleware",
+    "axes.middleware.AxesMiddleware",
 ]
+
+AUTHENTICATION_BACKENDS = [
+    "axes.backends.AxesStandaloneBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
+
+# Lock out an email + IP pair for 15 minutes after 5 failed passwords.
+AXES_FAILURE_LIMIT = 5
+AXES_COOLOFF_TIME = timedelta(minutes=15)
+AXES_LOCKOUT_PARAMETERS = [["username", "ip_address"]]
+AXES_RESET_ON_SUCCESS = True
+AXES_LOCKOUT_CALLABLE = "identity.infrastructure.credentials.lockout_response"
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "USER_ID_FIELD": "id",
+    "UPDATE_LAST_LOGIN": False,
+}
 
 ROOT_URLCONF = "config.urls"
 WSGI_APPLICATION = "config.wsgi.application"

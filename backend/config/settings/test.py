@@ -10,7 +10,7 @@ import os
 from .base import *  # noqa: F403
 from .base import DATABASES, INSTALLED_APPS
 
-SECRET_KEY = "test-only-insecure-key"
+SECRET_KEY = "test-only-insecure-key-0123456789abcdef"
 ALLOWED_HOSTS = ["testserver"]
 
 DATABASES["default"].update(

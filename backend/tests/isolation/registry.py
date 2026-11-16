@@ -53,6 +53,11 @@ ROUTES: dict[str, RouteCase] = {
     ),
     "invitation-accept": RouteCase({"POST"}, "public"),
     "totp-confirm": RouteCase({"POST"}, "public"),
+    "sign-in": RouteCase({"POST"}, "public"),
+    "sign-in-totp": RouteCase({"POST"}, "public"),
+    "token-refresh": RouteCase({"POST"}, "public"),
+    "sign-out": RouteCase({"POST"}, "public"),
+    "me": RouteCase({"GET"}, "self"),
     "sample-note-list": RouteCase(
         {"GET", "POST"}, "tenant", make_target=sample_note_list, collection=True
     ),

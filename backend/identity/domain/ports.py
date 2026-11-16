@@ -42,3 +42,17 @@ class EnrolmentTokens(Protocol):
     def read(self, token: str) -> UUID:
         """Return the user id, or raise EnrolmentInvalid if forged or older than 15 minutes."""
         ...
+
+
+class CredentialChecker(Protocol):
+    def check(self, email: Email, password: str) -> UUID | None:
+        """The user id if the password matches, else None. Raises LockedOut when throttled."""
+        ...
+
+
+class MfaTokens(Protocol):
+    def issue(self, user_id: UUID) -> str: ...
+
+    def read(self, token: str) -> UUID:
+        """Return the user id, or raise MfaInvalid if forged or older than 5 minutes."""
+        ...

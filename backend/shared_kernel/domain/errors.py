@@ -6,6 +6,9 @@ from typing import ClassVar
 class DomainError(Exception):
     code: ClassVar[str] = "domain_error"
     http_status: ClassVar[int] = 400
+    # Whether the request's transaction is rolled back. Errors that must leave a trace
+    # (e.g. failed sign-in attempts counted for lockout) set this to False.
+    rollback: ClassVar[bool] = True
 
 
 class InvalidValue(DomainError):

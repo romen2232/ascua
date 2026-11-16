@@ -16,3 +16,24 @@ class InvalidTotpCode(DomainError):
 
 class EnrolmentInvalid(DomainError):
     code = "enrolment_invalid"
+
+
+class InvalidCredentials(DomainError):
+    """Same error for an unknown email and a wrong password."""
+
+    code = "invalid_credentials"
+    rollback = False  # keep the failed attempt recorded for lockout
+
+
+class TotpNotEnrolled(DomainError):
+    code = "totp_not_enrolled"
+
+
+class LockedOut(DomainError):
+    code = "locked_out"
+    http_status = 429
+    rollback = False  # the attempt that triggered the lock must stay recorded
+
+
+class MfaInvalid(DomainError):
+    code = "mfa_invalid"

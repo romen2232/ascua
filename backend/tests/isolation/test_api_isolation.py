@@ -5,6 +5,7 @@ from django.urls import reverse
 from rest_framework.test import APIClient
 
 from identity.infrastructure.models import UserRecord
+from tests.conftest import signed_in
 from tests.isolation.registry import ROUTES
 
 TENANT_CASES = [
@@ -17,9 +18,7 @@ TENANT_CASES = [
 
 
 def _client(user) -> APIClient:
-    client = APIClient()
-    client.force_authenticate(user)
-    return client
+    return signed_in(user)
 
 
 def _attempt(client, method, url, payload):
@@ -61,6 +60,7 @@ def test_api_isolation(owner, intruder, name, method):
 @pytest.mark.parametrize(("name", "method"), TENANT_CASES)
 def test_admin_gets_404_on_other_users_item(owner, intruder, name, method):
     intruder.is_admin = True
+    intruder.save()
     _check_isolation(owner, intruder, name, method)
 
 

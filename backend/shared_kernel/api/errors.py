@@ -24,7 +24,13 @@ MESSAGES: dict[str, Any] = {
     "method_not_allowed": _("This action is not allowed here."),
     "throttled": _("Too many attempts. Try again later."),
     "server_error": _("Something went wrong on the server."),
+    "token_not_valid": _("Your session has expired. Sign in again."),
 }
+
+
+def register_messages(messages: dict[str, Any]) -> None:
+    """Contexts register the user-facing message for each of their error codes."""
+    MESSAGES.update(messages)
 
 
 def message_for(code: str) -> str:
@@ -42,7 +48,8 @@ def exception_handler(exc: Exception, context: dict[str, Any]) -> Response:
         set_rollback()
         return error_response("not_found", status.HTTP_404_NOT_FOUND)
     if isinstance(exc, DomainError):
-        set_rollback()
+        if exc.rollback:
+            set_rollback()
         return error_response(exc.code, exc.http_status)
     if isinstance(exc, exceptions.ValidationError):
         set_rollback()

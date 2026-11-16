@@ -12,6 +12,8 @@ from typing import Any
 import pytest
 from django.db import connection
 from django.db.backends.signals import connection_created
+from rest_framework.test import APIClient
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from shared_kernel.domain.actor import Actor
 from shared_kernel.infrastructure.actor_context import acting_as
@@ -54,3 +56,16 @@ def two_users_with_notes(db) -> TwoUsers:
     with acting_as(users.b):
         SampleNote.objects.for_actor(users.b).create(owner_id=users.b.user_id, text="b1")
     return users
+
+
+def signed_in(user: Any) -> APIClient:
+    """An API client carrying a real access token for `user`."""
+    client = APIClient()
+    access = RefreshToken.for_user(user).access_token
+    client.credentials(HTTP_AUTHORIZATION=f"Bearer {access}")
+    return client
+
+
+@pytest.fixture
+def signed_in_client() -> Any:
+    return signed_in

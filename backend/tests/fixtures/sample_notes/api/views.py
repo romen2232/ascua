@@ -5,8 +5,13 @@ from rest_framework import mixins, serializers
 
 from shared_kernel.api.scoped import ScopedViewSet
 from shared_kernel.domain.actor import Actor
-from shared_kernel.domain.errors import InvalidValue
+from shared_kernel.domain.errors import DomainError, InvalidValue
 from tests.fixtures.sample_notes.infrastructure.models import SampleNote
+
+
+class KeptThenFailed(DomainError):
+    code = "kept_then_failed"
+    rollback = False
 
 
 class SampleNoteSerializer(serializers.ModelSerializer[SampleNote]):
@@ -33,3 +38,5 @@ class SampleNoteViewSet(
         serializer.instance = SampleNote.objects.for_actor(self.actor).create(
             owner_id=self.actor.user_id, **serializer.validated_data
         )
+        if serializer.validated_data["text"] == "keep-then-fail":
+            raise KeptThenFailed
