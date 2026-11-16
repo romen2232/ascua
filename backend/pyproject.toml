@@ -6,6 +6,7 @@ dependencies = [
     "argon2-cffi>=25.1.0",
     "django>=5.2,<5.3",
     "django-axes>=9.0.0",
+    "django-cors-headers>=4.9.0",
     "django-otp>=1.7.5",
     "djangorestframework>=3.18.3",
     "djangorestframework-simplejwt>=5.5.1",
@@ -54,7 +55,7 @@ disallow_incomplete_defs = false
 disallow_untyped_calls = false
 
 [[tool.mypy.overrides]]
-module = ["django_otp.*", "axes.*", "rest_framework_simplejwt.*", "drf_spectacular.*", "factory.*", "polib.*"]
+module = ["corsheaders.*", "django_otp.*", "axes.*", "rest_framework_simplejwt.*", "drf_spectacular.*", "factory.*", "polib.*"]
 ignore_missing_imports = true
 
 [tool.django-stubs]

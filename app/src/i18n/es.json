@@ -4,5 +4,56 @@
   },
   "common": {
     "loading": "Cargando…"
+  },
+  "languages": {
+    "es": "Español",
+    "en": "English"
+  },
+  "auth": {
+    "fields": {
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "code": "Código de 6 dígitos",
+      "name": "Tu nombre"
+    },
+    "signIn": {
+      "title": "Iniciar sesión",
+      "submit": "Iniciar sesión"
+    },
+    "totp": {
+      "title": "Introduce tu código",
+      "submit": "Continuar"
+    },
+    "invite": {
+      "title": "Crea tu cuenta",
+      "language": "Idioma",
+      "submit": "Crear cuenta",
+      "scanTitle": "Configura la verificación en dos pasos",
+      "scanHelp": "Escanea este código con una aplicación de autenticación y escribe el código de 6 dígitos que muestre.",
+      "qrLabel": "Código QR para tu aplicación de autenticación",
+      "manualSecret": "¿No puedes escanearlo? Introduce esta clave en la aplicación:",
+      "confirm": "Confirmar"
+    }
+  },
+  "home": {
+    "welcome": "Hola, {{name}}",
+    "empty": "Aquí aparecerán tus cuentas y objetivos.",
+    "signOut": "Cerrar sesión"
+  },
+  "errors": {
+    "invalid_credentials": "El correo electrónico o la contraseña no son correctos.",
+    "invalid_totp_code": "El código no es válido. Prueba con el código actual de tu aplicación.",
+    "mfa_invalid": "El inicio de sesión ha tardado demasiado. Empieza de nuevo.",
+    "locked_out": "Demasiados intentos fallidos. Inténtalo de nuevo en 15 minutos.",
+    "totp_not_enrolled": "Primero termina de configurar la verificación en dos pasos.",
+    "invitation_invalid": "Este enlace de invitación no es válido.",
+    "invitation_used": "Esta invitación ya se ha usado.",
+    "invitation_expired": "Esta invitación ha caducado. Pide una nueva.",
+    "email_taken": "Ya existe una cuenta con este correo electrónico.",
+    "weak_password": "Usa una contraseña de al menos 12 caracteres.",
+    "enrolment_invalid": "Este enlace de configuración ha caducado. Regístrate de nuevo o pide ayuda.",
+    "validation_error": "Algunos campos no son válidos.",
+    "network": "No se puede conectar con el servidor. Comprueba tu conexión.",
+    "unknown": "Algo ha fallado. Inténtalo de nuevo."
   }
 }

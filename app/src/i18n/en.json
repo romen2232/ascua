@@ -4,5 +4,56 @@
   },
   "common": {
     "loading": "Loading…"
+  },
+  "languages": {
+    "es": "Español",
+    "en": "English"
+  },
+  "auth": {
+    "fields": {
+      "email": "Email",
+      "password": "Password",
+      "code": "6-digit code",
+      "name": "Your name"
+    },
+    "signIn": {
+      "title": "Sign in",
+      "submit": "Sign in"
+    },
+    "totp": {
+      "title": "Enter your code",
+      "submit": "Continue"
+    },
+    "invite": {
+      "title": "Create your account",
+      "language": "Language",
+      "submit": "Create account",
+      "scanTitle": "Set up two-factor authentication",
+      "scanHelp": "Scan this code with an authenticator app, then enter the 6-digit code it shows.",
+      "qrLabel": "QR code for your authenticator app",
+      "manualSecret": "Can't scan it? Enter this key in the app:",
+      "confirm": "Confirm"
+    }
+  },
+  "home": {
+    "welcome": "Hello, {{name}}",
+    "empty": "Your accounts and goals will appear here.",
+    "signOut": "Sign out"
+  },
+  "errors": {
+    "invalid_credentials": "Email or password is not correct.",
+    "invalid_totp_code": "The code is not valid. Try the current code from your app.",
+    "mfa_invalid": "Your sign-in took too long. Start again.",
+    "locked_out": "Too many failed attempts. Try again in 15 minutes.",
+    "totp_not_enrolled": "Finish setting up two-factor authentication first.",
+    "invitation_invalid": "This invitation link is not valid.",
+    "invitation_used": "This invitation has already been used.",
+    "invitation_expired": "This invitation has expired. Ask for a new one.",
+    "email_taken": "An account with this email already exists.",
+    "weak_password": "Use a password of at least 12 characters.",
+    "enrolment_invalid": "This set-up link has expired. Sign up again or ask for help.",
+    "validation_error": "Some fields are not valid.",
+    "network": "Can't reach the server. Check your connection.",
+    "unknown": "Something went wrong. Try again."
   }
 }

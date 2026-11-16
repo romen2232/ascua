@@ -13,6 +13,7 @@ ALLOWED_HOSTS: list[str] = [h for h in os.environ.get("ASCUA_ALLOWED_HOSTS", "")
 INSTALLED_APPS = [
     "django.contrib.auth",
     "django.contrib.contenttypes",
+    "corsheaders",
     "rest_framework",
     "drf_spectacular",
     "django_otp",
@@ -25,6 +26,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "axes.middleware.AxesMiddleware",
@@ -101,3 +103,14 @@ SPECTACULAR_SETTINGS = {
 SYSTEM_QUERY_ALLOWLIST: list[str] = []
 
 OTP_TOTP_ISSUER = "ascua"
+
+# Web client origins allowed to call the API with credentials (refresh cookie).
+CORS_ALLOWED_ORIGINS = [o for o in os.environ.get("ASCUA_CORS_ORIGINS", "").split(",") if o]
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-language",
+    "authorization",
+    "content-type",
+    "x-ascua-client",
+]

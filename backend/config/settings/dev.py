@@ -15,3 +15,5 @@ DATABASES["default"].update(
         "PASSWORD": os.environ.get("ASCUA_DB_PASSWORD", DATABASES["default"]["USER"]),
     }
 )
+
+CORS_ALLOWED_ORIGINS = os.environ.get("ASCUA_CORS_ORIGINS", "http://localhost:8081").split(",")
