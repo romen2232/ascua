@@ -18,4 +18,6 @@ Read first: `docs/superpowers/specs/2026-11-16-ascua-v1-design.md` (v1 design),
 ## Commands
 - Dev database: `docker compose -f compose.dev.yaml up -d` (PostgreSQL 17 on port 5442)
 - Migrate: `cd backend && ASCUA_DB_USER=ascua_owner uv run python manage.py migrate`
+- Compile translations: `cd backend && uv run python manage.py compilemessages --ignore ".venv/*"`
+- Update catalogs after adding strings: `uv run python manage.py makemessages -l es -l en --ignore ".venv/*" --ignore "tests/*" --no-location`
 - All checks: `scripts/check.sh`

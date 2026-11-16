@@ -4,6 +4,7 @@ import logging
 from typing import Any
 
 from django.http import Http404
+from django.utils import translation
 from django.utils.translation import gettext_lazy as _
 from rest_framework import exceptions, status
 from rest_framework.response import Response
@@ -43,6 +44,18 @@ def error_response(code: str, http_status: int, fields: Any = None) -> Response:
 
 
 def exception_handler(exc: Exception, context: dict[str, Any]) -> Response:
+    """Accept-Language wins; otherwise the signed-in user's locale; otherwise Spanish."""
+    request = context.get("request")
+    user = getattr(request, "user", None)
+    explicit = request is not None and "HTTP_ACCEPT_LANGUAGE" in request.META
+    locale = getattr(user, "locale", None)
+    if not explicit and locale:
+        with translation.override(locale):
+            return _handle(exc, context)
+    return _handle(exc, context)
+
+
+def _handle(exc: Exception, context: dict[str, Any]) -> Response:
     # Denied and missing look the same, so the API never confirms that something exists.
     if isinstance(exc, Http404 | exceptions.NotFound | exceptions.PermissionDenied):
         set_rollback()

@@ -1,0 +1,86 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-16 18:34+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+
+msgid "Enter a valid email address."
+msgstr "Introduce un correo electrónico válido."
+
+msgid "An account with this email already exists."
+msgstr "Ya existe una cuenta con este correo electrónico."
+
+msgid "Use a password of at least 12 characters."
+msgstr "Usa una contraseña de al menos 12 caracteres."
+
+msgid "This invitation link is not valid."
+msgstr "Este enlace de invitación no es válido."
+
+msgid "This invitation has already been used."
+msgstr "Esta invitación ya se ha usado."
+
+msgid "This invitation has expired. Ask for a new one."
+msgstr "Esta invitación ha caducado. Pide una nueva."
+
+msgid "The code is not valid. Try the current code from your app."
+msgstr "El código no es válido. Prueba con el código actual de tu aplicación."
+
+msgid "This set-up link has expired. Sign up again or ask for help."
+msgstr ""
+"Este enlace de configuración ha caducado. Regístrate de nuevo o pide ayuda."
+
+msgid "Email or password is not correct."
+msgstr "El correo electrónico o la contraseña no son correctos."
+
+msgid "Finish setting up two-factor authentication first."
+msgstr "Primero termina de configurar la verificación en dos pasos."
+
+msgid "Too many failed attempts. Try again in 15 minutes."
+msgstr "Demasiados intentos fallidos. Inténtalo de nuevo en 15 minutos."
+
+msgid "Your sign-in took too long. Start again."
+msgstr "El inicio de sesión ha tardado demasiado. Empieza de nuevo."
+
+msgid "Not found."
+msgstr "No encontrado."
+
+msgid "Authentication is required."
+msgstr "Hace falta iniciar sesión."
+
+msgid "Authentication failed."
+msgstr "No se ha podido verificar tu identidad."
+
+msgid "Some fields are not valid."
+msgstr "Algunos campos no son válidos."
+
+msgid "A value is not valid."
+msgstr "Un valor no es válido."
+
+msgid "Amounts in different currencies cannot be combined."
+msgstr "No se pueden combinar importes en monedas distintas."
+
+msgid "This action is not allowed here."
+msgstr "Esta acción no está permitida aquí."
+
+msgid "Too many attempts. Try again later."
+msgstr "Demasiados intentos. Inténtalo más tarde."
+
+msgid "Something went wrong on the server."
+msgstr "Algo ha fallado en el servidor."
+
+msgid "Your session has expired. Sign in again."
+msgstr "Tu sesión ha caducado. Vuelve a iniciar sesión."
