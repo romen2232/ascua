@@ -1,0 +1,8 @@
+{
+  "app": {
+    "name": "ascua"
+  },
+  "common": {
+    "loading": "Cargando…"
+  }
+}
