@@ -2,11 +2,14 @@ import { fireEvent, render, screen } from "@testing-library/react-native";
 
 import i18n from "../../i18n";
 import { fakeServer } from "../../test/fakeServer";
+import { session } from "../../auth/session";
+import { EnrolScreen } from "../EnrolScreen";
 import { InviteScreen } from "../InviteScreen";
 import { SignInScreen } from "../SignInScreen";
 
 const mockRouter = { push: jest.fn(), replace: jest.fn() };
 jest.mock("expo-router", () => ({
+  Redirect: () => null,
   useRouter: () => mockRouter,
   useLocalSearchParams: () => ({ token: "invite-token" }),
 }));
@@ -101,4 +104,38 @@ it("invite screen confirms the code and sends the user to sign in", async () => 
   await new Promise((r) => setTimeout(r, 0));
   expect(server.requests.at(-1)?.body).toEqual({ enrolment_token: "enrol", code: "123456" });
   expect(mockRouter.replace).toHaveBeenCalledWith("/sign-in");
+});
+
+it("sign-in screen opens enrolment when the account has no TOTP yet", async () => {
+  serve({
+    "POST /api/auth/sign-in": () => ({
+      status: 200,
+      body: { enrolment: { user_id: "u", provisioning_uri: URI, enrolment_token: "E" } },
+    }),
+  });
+  await render(<SignInScreen />);
+  await fireEvent.changeText(screen.getByLabelText("Email"), "romen@example.com");
+  await fireEvent.changeText(screen.getByLabelText("Password"), "correct horse battery");
+  await fireEvent.press(screen.getByRole("button", { name: "Sign in" }));
+  await screen.findByRole("button", { name: "Sign in" });
+  expect(mockRouter.push).toHaveBeenCalledWith("/enrol");
+});
+
+it("enrol screen shows the QR and returns to sign-in after confirming", async () => {
+  const server = serve({
+    "POST /api/auth/sign-in": () => ({
+      status: 200,
+      body: { enrolment: { user_id: "u", provisioning_uri: URI, enrolment_token: "E" } },
+    }),
+    "POST /api/auth/totp/confirm": () => ({ status: 204 }),
+  });
+  await session.signIn("romen@example.com", "correct horse battery");
+  await render(<EnrolScreen />);
+  expect(screen.getByText("JBSWY3DPEHPK3PXP")).toBeTruthy();
+  await fireEvent.changeText(screen.getByLabelText("6-digit code"), "123456");
+  await fireEvent.press(screen.getByRole("button", { name: "Confirm" }));
+  await new Promise((r) => setTimeout(r, 0));
+  expect(server.requests.at(-1)?.body).toEqual({ enrolment_token: "E", code: "123456" });
+  expect(mockRouter.replace).toHaveBeenCalledWith("/sign-in");
+  expect(session.getState().status).toBe("signed-out");
 });

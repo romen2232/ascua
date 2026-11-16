@@ -148,12 +148,32 @@ def test_sign_out_revokes_refresh(user):
     assert again.status_code == 401
 
 
-def test_unconfirmed_totp_cannot_sign_in(user):
+def test_unconfirmed_user_gets_fresh_enrolment_at_sign_in(user):
+    """Missing the 15-minute set-up window must not strand an account."""
     user.totp_confirmed = False
     user.save()
     response = password_step(APIClient())
+    assert response.status_code == 200
+    body = response.json()
+    assert "mfa_token" not in body
+    enrolment = body["enrolment"]
+    assert enrolment["provisioning_uri"].startswith("otpauth://totp/")
+    confirm = APIClient().post(
+        "/api/auth/totp/confirm",
+        {"enrolment_token": enrolment["enrolment_token"], "code": code_for(user)},
+        format="json",
+    )
+    assert confirm.status_code == 204
+    user.refresh_from_db()
+    assert user.totp_confirmed is True
+
+
+def test_unconfirmed_user_with_wrong_password_gets_no_enrolment(user):
+    user.totp_confirmed = False
+    user.save()
+    response = password_step(APIClient(), password="not the password")
     assert response.status_code == 400
-    assert response.json()["error"]["code"] == "totp_not_enrolled"
+    assert "enrolment" not in response.json()
 
 
 def test_me_returns_only_caller(user):

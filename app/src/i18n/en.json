@@ -45,7 +45,6 @@
     "invalid_totp_code": "The code is not valid. Try the current code from your app.",
     "mfa_invalid": "Your sign-in took too long. Start again.",
     "locked_out": "Too many failed attempts. Try again in 15 minutes.",
-    "totp_not_enrolled": "Finish setting up two-factor authentication first.",
     "invitation_invalid": "This invitation link is not valid.",
     "invitation_used": "This invitation has already been used.",
     "invitation_expired": "This invitation has expired. Ask for a new one.",

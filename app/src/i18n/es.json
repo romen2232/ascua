@@ -45,7 +45,6 @@
     "invalid_totp_code": "El código no es válido. Prueba con el código actual de tu aplicación.",
     "mfa_invalid": "El inicio de sesión ha tardado demasiado. Empieza de nuevo.",
     "locked_out": "Demasiados intentos fallidos. Inténtalo de nuevo en 15 minutos.",
-    "totp_not_enrolled": "Primero termina de configurar la verificación en dos pasos.",
     "invitation_invalid": "Este enlace de invitación no es válido.",
     "invitation_used": "Esta invitación ya se ha usado.",
     "invitation_expired": "Esta invitación ha caducado. Pide una nueva.",

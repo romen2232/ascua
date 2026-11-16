@@ -26,10 +26,6 @@ class InvalidCredentials(DomainError):
     rollback = False  # keep the failed attempt recorded for lockout
 
 
-class TotpNotEnrolled(DomainError):
-    code = "totp_not_enrolled"
-
-
 class LockedOut(DomainError):
     code = "locked_out"
     http_status = 429

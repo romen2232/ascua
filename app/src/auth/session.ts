@@ -83,7 +83,11 @@ export function createSession({ storage }: { storage: RefreshStorage }) {
       try {
         const { data, error } = await http().POST("/api/auth/sign-in", { body: { email, password } });
         if (!data) return set({ status: "signed-out", error: errorCode(error) });
-        mfaToken = data.mfa_token;
+        if (data.enrolment) {
+          const { provisioning_uri: uri, enrolment_token: token } = data.enrolment;
+          return set({ status: "enrol", enrolment: { uri, token } });
+        }
+        mfaToken = data.mfa_token ?? null;
         set({ status: "mfa" });
       } catch {
         set({ status: "signed-out", error: "network" });
@@ -106,6 +110,11 @@ export function createSession({ storage }: { storage: RefreshStorage }) {
       } catch {
         set({ status: "mfa", error: "network" });
       }
+    },
+
+    /** TOTP set-up is done; the user signs in again with their new code. */
+    finishEnrolment() {
+      set({ status: "signed-out" });
     },
 
     async signOut() {

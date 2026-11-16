@@ -15,7 +15,7 @@ from identity.api import messages  # noqa: F401  (registers error messages)
 from identity.api import serializers as s
 from identity.application.deps import SignUpDeps
 from identity.application.invite import invite_user
-from identity.application.sign_in import SignInDeps, finish_sign_in, start_sign_in
+from identity.application.sign_in import MfaRequired, SignInDeps, finish_sign_in, start_sign_in
 from identity.application.sign_up import accept_invitation, confirm_totp
 from identity.domain.email import Email
 from identity.infrastructure.credentials import DjangoCredentialChecker
@@ -127,6 +127,7 @@ def sign_in_deps(request: Request) -> SignInDeps:
         credentials=DjangoCredentialChecker(request._request),
         totp=DjangoOtpTotp(),
         mfa=SignedMfaTokens(),
+        enrolment=SignedEnrolmentTokens(),
     )
 
 
@@ -137,8 +138,18 @@ class SignInView(APIView):
     @extend_schema(request=s.SignInRequest, responses={200: s.SignInResponse})
     def post(self, request: Request) -> Response:
         data = _valid(s.SignInRequest, request)
-        mfa_token = start_sign_in(data["email"], data["password"], sign_in_deps(request))
-        return Response({"mfa_token": mfa_token})
+        result = start_sign_in(data["email"], data["password"], sign_in_deps(request))
+        if isinstance(result, MfaRequired):
+            return Response({"mfa_token": result.mfa_token})
+        return Response(
+            {
+                "enrolment": {
+                    "user_id": str(result.user_id),
+                    "provisioning_uri": result.provisioning_uri,
+                    "enrolment_token": result.enrolment_token,
+                }
+            }
+        )
 
 
 class SignInTotpView(APIView):

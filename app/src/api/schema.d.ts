@@ -62,7 +62,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** @description Authenticated by the refresh token itself; a bad token is a 401, not a 403. */
+        /** @description Revoke the refresh token if one is sent; always clear the web cookie. */
         post: operations["auth_sign_out_create"];
         delete?: never;
         options?: never;
@@ -182,8 +182,10 @@ export interface components {
             email: string;
             password: string;
         };
+        /** @description Exactly one field is present: `mfa_token` (ask for the code) or `enrolment`. */
         SignInResponse: {
-            mfa_token: string;
+            mfa_token?: string;
+            enrolment?: components["schemas"]["TotpEnrolmentResponse"];
         };
         SignInTotpRequest: {
             mfa_token: string;

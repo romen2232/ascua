@@ -20,7 +20,9 @@ export function SignInScreen() {
     setBusy(true);
     await session.signIn(email, password);
     setBusy(false);
-    if (session.getState().status === "mfa") router.push("/totp");
+    const { status } = session.getState();
+    if (status === "mfa") router.push("/totp");
+    if (status === "enrol") router.push("/enrol");
   };
 
   return (

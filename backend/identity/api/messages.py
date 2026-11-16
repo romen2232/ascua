@@ -13,7 +13,6 @@ register_messages(
         "invalid_totp_code": _("The code is not valid. Try the current code from your app."),
         "enrolment_invalid": _("This set-up link has expired. Sign up again or ask for help."),
         "invalid_credentials": _("Email or password is not correct."),
-        "totp_not_enrolled": _("Finish setting up two-factor authentication first."),
         "locked_out": _("Too many failed attempts. Try again in 15 minutes."),
         "mfa_invalid": _("Your sign-in took too long. Start again."),
     }

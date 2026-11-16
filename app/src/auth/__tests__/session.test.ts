@@ -96,3 +96,17 @@ it("signOut revokes the refresh token and clears storage", async () => {
   expect(session.getState().status).toBe("signed-out");
   expect(session.authHandlers.getAccessToken()).toBeNull();
 });
+
+it("signIn of an account without TOTP moves to enrol with a fresh set-up", async () => {
+  const { session } = setup({
+    "POST /api/auth/sign-in": () => ({
+      status: 200,
+      body: { enrolment: { user_id: "u", provisioning_uri: "otpauth://totp/x?secret=ABC", enrolment_token: "E" } },
+    }),
+  });
+  await session.signIn("romen@example.com", "correct horse battery");
+  expect(session.getState()).toMatchObject({
+    status: "enrol",
+    enrolment: { uri: "otpauth://totp/x?secret=ABC", token: "E" },
+  });
+});

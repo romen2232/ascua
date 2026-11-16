@@ -33,7 +33,10 @@ class SignInRequest(serializers.Serializer[None]):
 
 
 class SignInResponse(serializers.Serializer[None]):
-    mfa_token = serializers.CharField()
+    """Exactly one field is present: `mfa_token` (ask for the code) or `enrolment`."""
+
+    mfa_token = serializers.CharField(required=False)
+    enrolment = TotpEnrolmentResponse(required=False)
 
 
 class SignInTotpRequest(serializers.Serializer[None]):

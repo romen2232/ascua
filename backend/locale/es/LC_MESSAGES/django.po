@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 18:34+0000\n"
+"POT-Creation-Date: 2026-11-16 19:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -45,9 +45,6 @@ msgstr ""
 
 msgid "Email or password is not correct."
 msgstr "El correo electrónico o la contraseña no son correctos."
-
-msgid "Finish setting up two-factor authentication first."
-msgstr "Primero termina de configurar la verificación en dos pasos."
 
 msgid "Too many failed attempts. Try again in 15 minutes."
 msgstr "Demasiados intentos fallidos. Inténtalo de nuevo en 15 minutos."

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 18:34+0000\n"
+"POT-Creation-Date: 2026-11-16 19:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -44,9 +44,6 @@ msgstr "This set-up link has expired. Sign up again or ask for help."
 
 msgid "Email or password is not correct."
 msgstr "Email or password is not correct."
-
-msgid "Finish setting up two-factor authentication first."
-msgstr "Finish setting up two-factor authentication first."
 
 msgid "Too many failed attempts. Try again in 15 minutes."
 msgstr "Too many failed attempts. Try again in 15 minutes."
