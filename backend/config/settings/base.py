@@ -14,6 +14,8 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "rest_framework",
     "drf_spectacular",
+    "django_otp",
+    "django_otp.plugins.otp_totp",
     "shared_kernel.infrastructure.apps.SharedKernelConfig",
     "identity.infrastructure.apps.IdentityConfig",
 ]
@@ -69,3 +71,5 @@ SPECTACULAR_SETTINGS = {
     "SERVE_INCLUDE_SCHEMA": False,
 }
 SYSTEM_QUERY_ALLOWLIST: list[str] = []
+
+OTP_TOTP_ISSUER = "ascua"

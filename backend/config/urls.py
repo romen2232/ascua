@@ -1,6 +1,7 @@
-from django.urls import URLPattern, URLResolver, path
+from django.urls import URLPattern, URLResolver, include, path
 from drf_spectacular.views import SpectacularAPIView
 
 urlpatterns: list[URLPattern | URLResolver] = [
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
+    path("api/", include("identity.api.urls")),
 ]

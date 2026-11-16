@@ -24,3 +24,21 @@ class InvitationRepository(Protocol):
 
 class Clock(Protocol):
     def now(self) -> datetime: ...
+
+
+class TotpPort(Protocol):
+    def create_device(self, user_id: UUID) -> str:
+        """Create (or replace) the user's TOTP device and return its otpauth:// URI."""
+        ...
+
+    def verify(self, user_id: UUID, code: str) -> bool:
+        """True if `code` is valid now (±1 step) and has not been used before."""
+        ...
+
+
+class EnrolmentTokens(Protocol):
+    def issue(self, user_id: UUID) -> str: ...
+
+    def read(self, token: str) -> UUID:
+        """Return the user id, or raise EnrolmentInvalid if forged or older than 15 minutes."""
+        ...

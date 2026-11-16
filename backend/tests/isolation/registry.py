@@ -13,7 +13,7 @@ from shared_kernel.domain.actor import Actor
 from shared_kernel.infrastructure.actor_context import acting_as
 from tests.fixtures.sample_notes.infrastructure.models import SampleNote
 
-Kind = Literal["tenant", "public", "self"]
+Kind = Literal["tenant", "public", "self", "admin"]
 Target = tuple[str, str]  # (url, id of the owned item)
 
 
@@ -48,6 +48,11 @@ def sample_note_list(user: Any) -> Target:
 
 ROUTES: dict[str, RouteCase] = {
     "schema": RouteCase({"GET"}, "public"),
+    "invitation-create": RouteCase(
+        {"POST"}, "admin", write_payload={"email": "someone@example.com"}
+    ),
+    "invitation-accept": RouteCase({"POST"}, "public"),
+    "totp-confirm": RouteCase({"POST"}, "public"),
     "sample-note-list": RouteCase(
         {"GET", "POST"}, "tenant", make_target=sample_note_list, collection=True
     ),

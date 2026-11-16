@@ -14,3 +14,10 @@ class InvalidValue(DomainError):
 
 class CurrencyMismatch(DomainError):
     code = "currency_mismatch"
+
+
+class NotAllowed(DomainError):
+    """The actor may not do this. Reported as not found so nothing's existence leaks."""
+
+    code = "not_found"
+    http_status = 404

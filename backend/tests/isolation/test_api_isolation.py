@@ -1,6 +1,7 @@
 """Another user, admin or not, can never read or change an item they don't own."""
 
 import pytest
+from django.urls import reverse
 from rest_framework.test import APIClient
 
 from identity.infrastructure.models import UserRecord
@@ -61,3 +62,18 @@ def test_api_isolation(owner, intruder, name, method):
 def test_admin_gets_404_on_other_users_item(owner, intruder, name, method):
     intruder.is_admin = True
     _check_isolation(owner, intruder, name, method)
+
+
+ADMIN_CASES = [
+    (name, method)
+    for name, case in sorted(ROUTES.items())
+    if case.kind == "admin"
+    for method in sorted(case.methods)
+]
+
+
+@pytest.mark.parametrize(("name", "method"), ADMIN_CASES)
+def test_admin_routes_are_not_found_for_non_admins(intruder, name, method):
+    url = reverse(name)
+    response = _attempt(_client(intruder), method, url, ROUTES[name].write_payload)
+    assert response.status_code == 404, response.content
