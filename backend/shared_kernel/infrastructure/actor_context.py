@@ -28,6 +28,12 @@ def set_actor(actor: Actor) -> None:
     _write(str(actor.user_id), "true" if actor.is_admin else "false")
 
 
+def clear_actor() -> None:
+    """Forget the actor for the rest of the transaction (no-op if it is already broken)."""
+    if connection.in_atomic_block and not connection.needs_rollback:
+        _write("", "")
+
+
 def current_actor() -> Actor | None:
     with connection.cursor() as cursor:
         cursor.execute(
@@ -50,8 +56,7 @@ def acting_as(actor: Actor) -> Iterator[Actor]:
             yield actor
         finally:
             # A broken transaction is rolled back to the savepoint, which restores the setting.
-            if not connection.needs_rollback:
-                if previous is None:
-                    _write("", "")
-                else:
-                    set_actor(previous)
+            if previous is None:
+                clear_actor()
+            elif not connection.needs_rollback:
+                set_actor(previous)

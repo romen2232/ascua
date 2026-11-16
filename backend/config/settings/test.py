@@ -27,3 +27,5 @@ INSTALLED_APPS = [
     *INSTALLED_APPS,
     "tests.fixtures.sample_notes.infrastructure.apps.SampleNotesConfig",
 ]
+
+ROOT_URLCONF = "tests.urls"
