@@ -38,7 +38,8 @@ class DjangoUserRepository:
 
 class DjangoInvitationRepository:
     def get_by_token_hash(self, token_hash: str) -> Invitation | None:
-        record = InvitationRecord.objects.filter(token_hash=token_hash).first()
+        # Lock the row: concurrent accepts of one invitation run one after the other.
+        record = InvitationRecord.objects.select_for_update().filter(token_hash=token_hash).first()
         return invitation_to_domain(record) if record else None
 
     def add(self, invitation: Invitation) -> None:

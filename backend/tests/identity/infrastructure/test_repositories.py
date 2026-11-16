@@ -68,3 +68,13 @@ def test_invitation_round_trip(db):
     assert reloaded is not None
     assert reloaded.used_at == NOW
     assert repo.get_by_token_hash("missing") is None
+
+
+def test_invitation_lookup_locks_the_row(db):
+    """Two simultaneous accepts queue on the row lock, so the second sees it used (410, not 500)."""
+    from django.db import connection
+    from django.test.utils import CaptureQueriesContext
+
+    with CaptureQueriesContext(connection) as queries:
+        DjangoInvitationRepository().get_by_token_hash("anything")
+    assert "FOR UPDATE" in queries.captured_queries[-1]["sql"]
