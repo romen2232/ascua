@@ -174,3 +174,13 @@ def test_lockout_is_per_email(user):
     for _ in range(5):
         password_step(APIClient(), password="wrong password!")
     assert password_step(APIClient(), email="other@example.com").status_code == 200
+
+
+def test_wrong_totp_codes_are_throttled(user):
+    client = APIClient()
+    mfa = password_step(client).json()["mfa_token"]
+    assert totp_step(client, mfa, "000000").status_code == 400
+    # The failure survives the request (django-otp backs off exponentially from it) ...
+    assert TOTPDevice.objects.get(user=user).throttling_failure_count == 1
+    # ... so while throttled, even the correct code is refused.
+    assert totp_step(client, mfa, code_for(user)).status_code == 400

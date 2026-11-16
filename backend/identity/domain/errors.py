@@ -12,6 +12,7 @@ class WeakPassword(DomainError):
 
 class InvalidTotpCode(DomainError):
     code = "invalid_totp_code"
+    rollback = False  # keep django-otp's failure counter, which throttles guessing
 
 
 class EnrolmentInvalid(DomainError):
