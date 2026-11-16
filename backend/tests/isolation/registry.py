@@ -57,6 +57,7 @@ ROUTES: dict[str, RouteCase] = {
 # Model label -> why it is not tenant-scoped.
 TENANT_MODELS_EXEMPT: dict[str, str] = {
     "identity.UserRecord": "account table; access via /api/me and admin use cases only",
+    "identity.InvitationRecord": "admin-issued; looked up only by token hash, holds no finances",
 }
 
 # Third-party apps whose tables hold no financial data.
