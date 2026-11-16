@@ -88,7 +88,8 @@ class TotpConfirmView(APIView):
 
 
 REFRESH_COOKIE = "ascua_refresh"
-REFRESH_COOKIE_PATH = "/api/auth/refresh"
+# Covers /api/auth/refresh and /api/auth/sign-out: browsers only send a cookie under its Path.
+REFRESH_COOKIE_PATH = "/api/auth/"
 
 
 def _is_web(request: Request) -> bool:
@@ -177,12 +178,16 @@ class RefreshView(_RefreshTokenView):
 class SignOutView(_RefreshTokenView):
     @extend_schema(request=s.RefreshRequest, responses={204: None})
     def post(self, request: Request) -> Response:
-        try:
-            RefreshToken(_refresh_token_from(request)).blacklist()  # type: ignore[arg-type]
-        except TokenError as exc:
-            raise InvalidToken(str(exc)) from exc
+        """Revoke the refresh token if one is sent; always clear the web cookie."""
+        body = request.data if isinstance(request.data, dict) else {}
+        token = body.get("refresh") or request.COOKIES.get(REFRESH_COOKIE)
+        if token:
+            try:
+                RefreshToken(token).blacklist()  # type: ignore[arg-type]
+            except TokenError as exc:
+                raise InvalidToken(str(exc)) from exc
         response = Response(status=status.HTTP_204_NO_CONTENT)
-        response.delete_cookie(REFRESH_COOKIE, path=REFRESH_COOKIE_PATH)
+        response.delete_cookie(REFRESH_COOKIE, path=REFRESH_COOKIE_PATH, samesite="Strict")
         return response
 
 

@@ -117,7 +117,7 @@ def test_web_client_gets_refresh_cookie_not_body(user):
     assert cookie["httponly"]
     assert cookie["secure"]
     assert cookie["samesite"] == "Strict"
-    assert cookie["path"] == "/api/auth/refresh"
+    assert cookie["path"] == "/api/auth/"
 
 
 def test_refresh_rotates_tokens(user):
@@ -184,3 +184,27 @@ def test_wrong_totp_codes_are_throttled(user):
     assert TOTPDevice.objects.get(user=user).throttling_failure_count == 1
     # ... so while throttled, even the correct code is refused.
     assert totp_step(client, mfa, code_for(user)).status_code == 400
+
+
+def test_refresh_cookie_reaches_refresh_and_sign_out(user):
+    _, response = sign_in(user, HTTP_X_ASCUA_CLIENT="web")
+    path = response.cookies["ascua_refresh"]["path"]
+    # Browsers only send a cookie to URLs under its Path.
+    assert "/api/auth/refresh".startswith(path)
+    assert "/api/auth/sign-out".startswith(path)
+
+
+def test_web_sign_out_revokes_cookie_session(user):
+    client, response = sign_in(user, HTTP_X_ASCUA_CLIENT="web")
+    refresh = response.cookies["ascua_refresh"].value
+    out = client.post("/api/auth/sign-out", {}, format="json", HTTP_X_ASCUA_CLIENT="web")
+    assert out.status_code == 204
+    assert out.cookies["ascua_refresh"].value == ""
+    again = APIClient().post("/api/auth/refresh", {"refresh": refresh}, format="json")
+    assert again.status_code == 401
+
+
+def test_sign_out_without_token_still_clears_cookie(db):
+    out = APIClient().post("/api/auth/sign-out", {}, format="json", HTTP_X_ASCUA_CLIENT="web")
+    assert out.status_code == 204
+    assert out.cookies["ascua_refresh"].value == ""
